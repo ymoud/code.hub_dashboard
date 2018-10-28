@@ -1,5 +1,6 @@
 import React from "react";
 import Services from "../services/index";
+import CourseGird from "../components/courses/courses-grid/CoursesGrid";
 
 class Courses extends React.Component {
   constructor(props) {
@@ -29,7 +30,7 @@ class Courses extends React.Component {
       <React.Fragment>
         <p>Courses:</p>
         {isLoaded 
-          ? courses.map(course => <p key={course.id}>{course.title}</p>)
+          ? <CourseGird courses={courses}></CourseGird>
           : <p>Loading courses</p>
         }
       </React.Fragment>

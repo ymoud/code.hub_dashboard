@@ -29,7 +29,7 @@ import styles from "./app-styles";
 
 class App extends React.Component {
   constructor({ title }) {
-    super(title);
+    super({ title });
 
     this.state = {
       open: false,
