@@ -1,6 +1,7 @@
 import React from "react";
 import Services from "../services/index";
 import CourseGird from "../components/courses/courses-grid/CoursesGrid";
+import { Typography } from "@material-ui/core";
 
 class Courses extends React.Component {
   constructor(props) {
@@ -28,7 +29,7 @@ class Courses extends React.Component {
 
     return (
       <React.Fragment>
-        <p>Courses:</p>
+        <Typography variant="h5">Courses</Typography>
         {isLoaded 
           ? <CourseGird courses={courses}></CourseGird>
           : <p>Loading courses</p>

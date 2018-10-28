@@ -3,24 +3,12 @@ import PropTypes from "prop-types";
 import CourseGridItem from "./course-grid-item/CourseGridItem";
 import Grid from "@material-ui/core/Grid";
 import classNames from "classnames";
+import { withStyles } from "@material-ui/core/styles";
 
-const CoursesGrid = ({courses}) => {
-
-  const styles = (theme) => ({
-    layout: {
-      width: "auto",
-      marginLeft: theme.spacing.unit * 3,
-      marginRight: theme.spacing.unit * 3,
-      [theme.breakpoints.up(1100 + theme.spacing.unit * 3 * 2)]: {
-        width: 1100,
-        marginLeft: "auto",
-        marginRight: "auto",
-      },
-    },
-  });
-
+const CoursesGrid = ({ courses }) => {
+  
   const grid = (
-    <div className={classNames(styles.layout, styles.cardGrid)}>
+    <div>
       <Grid container spacing={40}>
         {courses.map(course => <CourseGridItem key={course.id} course={course}></CourseGridItem>)}
       </Grid>
