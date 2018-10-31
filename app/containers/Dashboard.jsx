@@ -1,15 +1,15 @@
 import React from "react";
 import Services from "../services/index";
+import {Typography} from "@material-ui/core";
 
 class Dashboard extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       stats: [],
       courses: [],
       isLoaded: false,
     };
-    this.displayName = "Dashboard Component";
   }
 
   componentDidMount() {
@@ -36,8 +36,9 @@ class Dashboard extends React.Component {
 
     return (
       <React.Fragment>
-        <h2>Dashboard</h2>
-        {
+        <Typography variant="h5">Dashboard</Typography>
+        <br/>
+        {/* {
           stats && stats.length 
             ? stats.map(statItem => <p key={statItem.id}>{statItem.title}</p>)
             : <p>No data found</p>
@@ -46,15 +47,10 @@ class Dashboard extends React.Component {
           courses && courses.length 
             ? courses.map(course => <p key={courses.id}>{course.title}</p>)
             : <p>No courses found</p>
-        }
+        } */}
       </React.Fragment>
     );
   }
 }
-
-Dashboard.defaultProps = {
-  name: "Dashboard",
-  displayName: "Dashboard Component"
-};
 
 export default Dashboard;

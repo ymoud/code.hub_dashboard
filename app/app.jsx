@@ -28,12 +28,12 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import styles from "./app-styles";
 
 class App extends React.Component {
-  constructor({ title }) {
-    super({ title });
+  constructor(props) {
+    super(props);
 
     this.state = {
       open: false,
-      title: title,
+      title: props.title,
     };
   }
 
@@ -123,6 +123,7 @@ class App extends React.Component {
 }
 
 App.propTypes = {
+  title: PropTypes.string,
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
 };

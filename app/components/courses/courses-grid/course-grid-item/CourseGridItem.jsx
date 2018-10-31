@@ -10,23 +10,8 @@ import Button from "@material-ui/core/Button";
 import ClearIcon from "@material-ui/icons/Clear";
 import CheckIcon from "@material-ui/icons/Check";
 import { Link } from "react-router-dom";
-import classNames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
-
-const styles = () => ({
-  card: {
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-    maxWidth: 345,
-  },
-  cardMedia: {
-    paddingTop: "56.25%", // 16:9
-  },
-  cardContent: {
-    flexGrow: 1,
-  }
-});
+import styles from "./styles";
 
 const CourseGridItem = ({ course, classes }) => {
   return (
@@ -42,18 +27,18 @@ const CourseGridItem = ({ course, classes }) => {
             <Typography gutterBottom variant="h5">
               {course.title}
             </Typography>
-            <Typography>
-              Price: {course.price.normal} € | Bookable: {course.open ? <CheckIcon></CheckIcon> : <ClearIcon></ClearIcon>}
+            <Typography gutterBottom="true">
+              Price: <span className={classes.boldText}>{course.price.normal}€</span> | Bookable: <span className={classes.boldText}>{course.open ? <CheckIcon></CheckIcon> : <ClearIcon></ClearIcon>}</span>
             </Typography>
-            <Typography>
-                Duration: {course.duration}
+            <Typography gutterBottom="true">
+                Duration: <span className={classes.boldText}>{course.duration}</span>
             </Typography>
-            <Typography>
-                Dates: {course.dates.start_date} - {course.dates.end_date}
+            <Typography gutterBottom="true">
+                Dates: <span className={classes.boldText}>{course.dates.start_date} - {course.dates.end_date}</span>
             </Typography>
           </CardContent>
           <CardActions>
-            <Button component={Link} to={`/course/${course.id}`} size="medium" color="primary">
+            <Button component={Link} to={`/courses/${course.id}`} size="medium" color="primary">
         View
             </Button>
           </CardActions>
@@ -61,10 +46,11 @@ const CourseGridItem = ({ course, classes }) => {
       </Grid>
     </React.Fragment>
   );
-}
+};
 
 CourseGridItem.propTypes = {
-  course: propTypes.object,
+  course: propTypes.object.isRequired,
+  classes: propTypes.object
 };
 
 export default withStyles(styles)(CourseGridItem);
