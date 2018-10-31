@@ -33,7 +33,7 @@ class App extends React.Component {
 
     this.state = {
       open: false,
-      title: title,
+      title: title
     };
   }
 
@@ -55,7 +55,7 @@ class App extends React.Component {
         <AppBar
           position="fixed"
           className={classNames(classes.appBar, {
-            [classes.appBarShift]: open,
+            [classes.appBarShift]: open
           })}
         >
           <Toolbar disableGutters={!open}>
@@ -80,40 +80,77 @@ class App extends React.Component {
               anchor="left"
               open={open}
               classes={{
-                paper: classes.drawerPaper,
+                paper: classes.drawerPaper
               }}
             >
               <div className={classes.drawerHeader}>
-                <Typography variant="h6" color="inherit" noWrap>Select a link</Typography>
+                <Typography variant="h6" color="inherit" noWrap>
+                  Select a link
+                </Typography>
                 <IconButton onClick={this.handleDrawerClose}>
-                  {theme.direction === "ltr" ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                  {theme.direction === "ltr" ? (
+                    <ChevronLeftIcon />
+                  ) : (
+                    <ChevronRightIcon />
+                  )}
                 </IconButton>
               </div>
               <Divider />
               <List>
-                <ListItemLink icon={<DashboardIcon/>} primary="Dashboard" secondary="Dashboard" to="/" afterClick={this.handleDrawerClose}/>
-                <ListItemLink icon={<LibraryBooksIcon/>} primary="Courses" secondary="Courses" to="/courses" afterClick={this.handleDrawerClose}/>
-                <ListItemLink icon={<PeopleIcon/>} primary="Instructors" secondary="Instructors" to="/instructors" afterClick={this.handleDrawerClose}/>
-                <ListItemLink icon={<AddIcon/>} primary="New Course" secondary="Add new course" to="/courses/new" afterClick={this.handleDrawerClose}/>
+                <ListItemLink
+                  icon={<DashboardIcon />}
+                  primary="Dashboard"
+                  secondary="Dashboard"
+                  to="/"
+                  afterClick={this.handleDrawerClose}
+                />
+                <ListItemLink
+                  icon={<LibraryBooksIcon />}
+                  primary="Courses"
+                  secondary="Courses"
+                  to="/courses"
+                  afterClick={this.handleDrawerClose}
+                />
+                <ListItemLink
+                  icon={<PeopleIcon />}
+                  primary="Instructors"
+                  secondary="Instructors"
+                  to="/instructors"
+                  afterClick={this.handleDrawerClose}
+                />
+                <ListItemLink
+                  icon={<AddIcon />}
+                  primary="New Course"
+                  secondary="Add new course"
+                  to="/courses/new"
+                  afterClick={this.handleDrawerClose}
+                />
               </List>
             </Drawer>
-        
+
             <main
               className={classNames(classes.content, {
-                [classes.contentShift]: open,
+                [classes.contentShift]: open
               })}
             >
               <div className={classes.drawerHeader} />
-          
+
               <Switch>
-                <Route path="/" exact={true} component={Dashboard}/>
-                <Route path="/courses" exact={true} component={Courses}/>
-                <Route path="/courses/new" exact={true} component={AddNewCourse}/>
-                <Route path="/courses/:courseId" component={Course}/>
-                <Route path="/instructors" exact={true} component={Instructors}/>
-                <Route component={NoMatch}></Route>
+                <Route path="/" exact={true} component={Dashboard} />
+                <Route path="/courses" exact={true} component={Courses} />
+                <Route
+                  path="/courses/new"
+                  exact={true}
+                  component={AddNewCourse}
+                />
+                <Route path="/courses/:courseId" component={Course} />
+                <Route
+                  path="/instructors"
+                  exact={true}
+                  component={Instructors}
+                />
+                <Route component={NoMatch} />
               </Switch>
-          
             </main>
           </React.Fragment>
         </BrowserRouter>
@@ -124,7 +161,7 @@ class App extends React.Component {
 
 App.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired
 };
 
 export default withStyles(styles, { withTheme: true })(App);

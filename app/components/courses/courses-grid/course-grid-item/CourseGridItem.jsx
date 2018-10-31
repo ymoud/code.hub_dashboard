@@ -18,13 +18,13 @@ const styles = () => ({
     height: "100%",
     display: "flex",
     flexDirection: "column",
-    maxWidth: 345,
+    maxWidth: 345
   },
   cardMedia: {
-    paddingTop: "56.25%", // 16:9
+    paddingTop: "56.25%" // 16:9
   },
   cardContent: {
-    flexGrow: 1,
+    flexGrow: 1
   }
 });
 
@@ -43,28 +43,32 @@ const CourseGridItem = ({ course, classes }) => {
               {course.title}
             </Typography>
             <Typography>
-              Price: {course.price.normal} € | Bookable: {course.open ? <CheckIcon></CheckIcon> : <ClearIcon></ClearIcon>}
+              Price: {course.price.normal} € | Bookable:{" "}
+              {course.open ? <CheckIcon /> : <ClearIcon />}
             </Typography>
+            <Typography>Duration: {course.duration}</Typography>
             <Typography>
-                Duration: {course.duration}
-            </Typography>
-            <Typography>
-                Dates: {course.dates.start_date} - {course.dates.end_date}
+              Dates: {course.dates.start_date} - {course.dates.end_date}
             </Typography>
           </CardContent>
           <CardActions>
-            <Button component={Link} to={`/course/${course.id}`} size="medium" color="primary">
-        View
+            <Button
+              component={Link}
+              to={`/course/${course.id}`}
+              size="medium"
+              color="primary"
+            >
+              View
             </Button>
           </CardActions>
         </Card>
       </Grid>
     </React.Fragment>
   );
-}
+};
 
 CourseGridItem.propTypes = {
-  course: propTypes.object,
+  course: propTypes.object
 };
 
 export default withStyles(styles)(CourseGridItem);

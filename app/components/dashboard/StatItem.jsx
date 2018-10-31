@@ -4,31 +4,42 @@ import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Badge from "@material-ui/core/Badge";
+import Paper from "@material-ui/core/Paper";
 
-const styles = {
+const styles = theme => ({
   root: {
-    padding: 15,
-    margin: 10,
-    border: "2px solid #dcdbdb"
+    flexGrow: 1,
+    maxWidth: 500,
+    padding: theme.spacing.unit * 2,
+    margin: theme.spacing.unit * 3
   },
   badge: {
-    right: "-200px"
+    width: 40,
+    height: 35
   }
-};
+});
 
 const StatItem = ({ classes, statItem }) => {
   return (
     <React.Fragment>
-      <Grid item sm={6} md={4} lg={3}>
-        <Typography className={classes.root} variant="h6" component="h6">
-          {statItem.title.toUpperCase()}:
-          <Badge
-            badgeContent={statItem.amount}
-            color="primary"
-            classes={{ badge: classes.badge }}
-          />
-        </Typography>
-      </Grid>
+      <Paper className={classes.root}>
+        <Grid container>
+          <Grid item xs>
+            <Typography gutterBottom variant="h6">
+              {statItem.title.toUpperCase()}:
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Badge
+              badgeContent={statItem.amount}
+              color="primary"
+              classes={{ badge: classes.badge }}
+            >
+              {""}
+            </Badge>
+          </Grid>
+        </Grid>
+      </Paper>
     </React.Fragment>
   );
 };
