@@ -22,7 +22,7 @@ class Services {
     return axios.get(`${Services.apiUrl}/${Services.statsPath}`);
   }
 
-  static getIntructors() {
+  static getInstructors() {
     return axios.get(`${Services.apiUrl}/${Services.instructorspath}`);
   }
 
