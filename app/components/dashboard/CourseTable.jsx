@@ -96,7 +96,7 @@ function CourseTable(props) {
                     labelName={"View Details"}
                     color={"primary"}
                     size={"medium"}
-                    url={`/course/${course.id}`}
+                    url={`/courses/${course.id}`}
                   />
                 </CustomTableCell>
               </TableRow>

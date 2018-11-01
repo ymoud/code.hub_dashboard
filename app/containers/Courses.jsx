@@ -30,6 +30,7 @@ class Courses extends React.Component {
     return (
       <React.Fragment>
         <Typography variant="h5">Courses</Typography>
+        <br/>
         {isLoaded 
           ? <CourseGird courses={courses}></CourseGird>
           : <p>Loading courses</p>
