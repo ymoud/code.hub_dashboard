@@ -26,6 +26,10 @@ class Services {
     return axios.get(`${Services.apiUrl}/${Services.instructorspath}`);
   }
 
+  static getIntructor(instructorId) {
+    return axios.get(`${Services.apiUrl}/${Services.instructorspath}/${instructorId}`);
+  }
+
   static createCourse(course) {
     return axios.post(`${Services.apiUrl}/${Services.coursesPath}`, course);
   }

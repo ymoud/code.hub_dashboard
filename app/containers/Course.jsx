@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Typography } from "@material-ui/core";
 import Services from "../services/index";
@@ -13,6 +13,7 @@ import CheckIcon from "@material-ui/icons/Check";
 import { Link } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import DOMPurify from "dompurify";
+import InstructorDetails from "../components/instructors/InstructorDetails";
 
 const styles = () => ({
   card: {
@@ -30,14 +31,15 @@ const styles = () => ({
   }
 });
 
-class Course extends React.Component {
+class Course extends Component {
   constructor(props) {
     super(props);
     this.state = {
       courseId: props.match.params.courseId,
       isLoaded: false,
       course: undefined,
-      styles: props.classes
+      styles: props.classes,
+      instructors: []
     };
   }
 
@@ -46,6 +48,14 @@ class Course extends React.Component {
     Services.getCourse(this.state.courseId)
       .then(response => {
         if(!response) return;
+        response.data.instructors.map(iID => {
+          Services.getIntructor(iID)
+            .then(iResponse => 
+              this.setState(state => {
+                state.instructors.push(iResponse.data);
+                return state;
+              }));
+        });
         this.setState(state => {
           state.course = response.data;
           state.isLoaded = true;
@@ -56,7 +66,7 @@ class Course extends React.Component {
 
   render() {
     if(!this.state.isLoaded) return (<p>Loading...</p>);
-    const { course, styles: classes } = this.state;
+    const { course, instructors, styles: classes } = this.state;
     if(!course) return (<p>error</p>);
     return (
       <React.Fragment>
@@ -83,6 +93,14 @@ class Course extends React.Component {
               <Grid container spacing={24}>
                 <Grid item cs={12}><Typography variant="body1" dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(course.description)}}></Typography></Grid>
               </Grid>
+              <Grid container spacing={24}>
+                <Grid item cs={12}>
+                  <Typography gutterBottom variant="h4">Instructors</Typography>
+                  {instructors != null && instructors.length > 0 
+                    ? instructors.map(instructor => <InstructorDetails key={instructor.id} instructor={instructor}></InstructorDetails>)
+                    : <p></p>}
+                </Grid>
+              </Grid>
             </CardContent>
             <CardActions>
               <Button component={Link} to={`/courses/${course.id}/edit`} size="medium" color="primary">Edit</Button>
@@ -96,7 +114,11 @@ class Course extends React.Component {
 }
 
 Course.propTypes = {
-  match: PropTypes.shape.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      courseId: PropTypes.node,
+    }).isRequired,
+  }).isRequired,
   classes: PropTypes.object
 };
 

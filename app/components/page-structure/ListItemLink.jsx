@@ -8,7 +8,7 @@ class ListItemLink extends React.Component {
     renderLink = itemProps => <Link onClick={this.props.afterClick} to={this.props.to} {...itemProps} />;
     
     render() {
-      const { icon, primary, secondary, afterClick } = this.props;
+      const { icon, primary, secondary } = this.props;
       return (
         <li>
           <ListItem button component={this.renderLink}>
