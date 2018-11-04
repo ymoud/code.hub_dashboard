@@ -27,13 +27,13 @@ const CourseGridItem = ({ course, classes }) => {
             <Typography gutterBottom variant="h5">
               {course.title}
             </Typography>
-            <Typography gutterBottom="true">
+            <Typography gutterBottom>
               Price: <span className={classes.boldText}>{course.price.normal}€</span> | Bookable: <span className={classes.boldText}>{course.open ? <CheckIcon></CheckIcon> : <ClearIcon></ClearIcon>}</span>
             </Typography>
-            <Typography gutterBottom="true">
+            <Typography gutterBottom>
                 Duration: <span className={classes.boldText}>{course.duration}</span>
             </Typography>
-            <Typography gutterBottom="true">
+            <Typography gutterBottom>
                 Dates: <span className={classes.boldText}>{course.dates.start_date} - {course.dates.end_date}</span>
             </Typography>
           </CardContent>
