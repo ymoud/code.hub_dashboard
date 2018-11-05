@@ -1,42 +1,26 @@
 import React from "react";
-import Services from "../services/index";
 import CourseGird from "../components/courses/courses-grid/CoursesGrid";
 import { Typography } from "@material-ui/core";
 import withLoader from "../components/hocs/withLoader";
+import propTypes from "prop-types";
+import withData from "../components/hocs/withData";
 
-class Courses extends React.Component {
-  constructor({isLoading}) {
-    super(isLoading);
-    this.state = {
-      isLoading: true,
-      courses: []
-    };
-  }
-  
-  componentDidMount() {
-    Services.getCourses()
-      .then(response => {
-        this.setState(state => {
-          state.courses = response.data;
-          state.isLoading = false;
-          return state;
-        });
-      });
-  }
+const Courses = ({ data, isLoading }) => (
+  <React.Fragment>
+    <Typography variant="h5">Courses</Typography>
+    <br />
+    {!isLoading && <CourseGird courses={data} />}
+  </React.Fragment>
+);
 
-  render() {
-    const { courses, isLoading } = this.state;
+Courses.propTypes = {
+  data: propTypes.array,
+  isLoading: propTypes.bool
+};
 
-    return (
-      <React.Fragment>
-        <Typography variant="h5">Courses</Typography>
-        <br/>
-        {
-          !isLoading && <CourseGird courses={courses}></CourseGird>
-        }
-      </React.Fragment>
-    );
-  }
-}
+const options = {
+  methodName: "getCourses",
+  methodParameter: undefined
+};
 
-export default withLoader()(Courses);
+export default withData(options)(withLoader(Courses));

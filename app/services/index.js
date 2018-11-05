@@ -26,7 +26,7 @@ class Services {
     return axios.get(`${Services.apiUrl}/${Services.instructorspath}`);
   }
 
-  static getIntructor(instructorId) {
+  static getInstructor(instructorId) {
     return axios.get(`${Services.apiUrl}/${Services.instructorspath}/${instructorId}`);
   }
 
