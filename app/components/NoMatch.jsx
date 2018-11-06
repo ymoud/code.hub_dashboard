@@ -33,7 +33,7 @@ class NoMatch extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, history } = this.props;
 
     return (
       <React.Fragment>
@@ -62,7 +62,7 @@ class NoMatch extends React.Component {
         </Typography>
 
         <center>
-          <Button
+        { history ? <Button
             variant="contained"
             color="primary"
             className={classes.button}
@@ -71,6 +71,7 @@ class NoMatch extends React.Component {
             <RestoreIcon className={classes.leftIcon} />
             Go Home
           </Button>
+          : null}
         </center>
       </React.Fragment>
     );
@@ -79,7 +80,7 @@ class NoMatch extends React.Component {
 
 NoMatch.propTypes = {
   classes: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object
 };
 
 export default withStyles(styles)(NoMatch);

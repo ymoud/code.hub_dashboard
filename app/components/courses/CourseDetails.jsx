@@ -15,7 +15,7 @@ import InstructorsGrid from "../instructors/InstructorsGrid";
 import withData from "../hocs/withData";
 import withLoader from "../hocs/withLoader";
 
-const CourseDetails = ({ data: course, classes }) => (
+const CourseDetails = ({ data: course, classes, handleDelete }) => (
   <React.Fragment>
     <Typography variant="h5">
       {course.title} ({course.id})
@@ -83,7 +83,7 @@ const CourseDetails = ({ data: course, classes }) => (
           >
             Edit
           </Button>
-          <Button size="medium" color="secondary">
+          <Button size="medium" color="secondary" onClick={handleDelete}>
             Delete
           </Button>
         </CardActions>
@@ -95,7 +95,8 @@ const CourseDetails = ({ data: course, classes }) => (
 CourseDetails.propTypes = {
     courseId: PropTypes.string.isRequired,
     data: PropTypes.object,
-    classes: PropTypes.object
+    classes: PropTypes.object,
+    handleDelete: PropTypes.func
 };
 
 const options = {
