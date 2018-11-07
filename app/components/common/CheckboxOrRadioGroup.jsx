@@ -1,38 +1,48 @@
-import React from 'react';
-import Checkbox  from "@material-ui/core/Checkbox";
+import React from "react";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import PropTypes from "prop-types";
 
-
-const CheckboxOrRadioGroup = (props,classes) => {
-		const checkBoxStyle = { display:"block"};
-		const labelSize = { fontSize: 13};
-
-	  return (
-		<div >
-			<label style={labelSize } >{props.title}</label>
-					{props.options.map(option => {
-						return (
-							<label key={option} style={checkBoxStyle }>
-								<Checkbox
-									name={props.setName}
-									onChange={props.controlFunc}
-									value={option}
-									checked={props.selectedOptions.indexOf(option) > -1}
-									type={props.type} /> {option}
-							</label>
-						);
-					})}
-				</div>
-	);	
+const CheckboxOrRadioGroup = props => {
+  return (
+    <React.Fragment>
+      {props.singleCheckBox ? (
+        // Used when checkbox is single value
+        <FormControlLabel
+          control={
+            <Checkbox
+              name={props.name}
+              checked={props.checked}
+              onChange={props.controlFunc}
+            />
+          }
+          label={props.label}
+        />
+      ) : (
+        // Used when checkbox is array of values
+        <FormControlLabel
+          control={
+            <Checkbox
+              index={props.index}
+              name={props.name}
+              checked={props.checked}
+              onChange={() => props.controlFunc(props.index)}
+            />
+          }
+          label={props.label}
+        />
+      )}
+    </React.Fragment>
+  );
 };
 
 CheckboxOrRadioGroup.propTypes = {
-	options: PropTypes.array.isRequired,
-	selectedOptions: PropTypes.array.isRequired,
-	title: PropTypes.string.isRequired,
-	setName: PropTypes.string.isRequired,
-	type: PropTypes.string.isRequired,
-	controlFunc:PropTypes.func.isRequired,
-  };
+  singleCheckBox: PropTypes.bool.isRequired,
+  name: PropTypes.string,
+  checked: PropTypes.bool.isRequired,
+  label: PropTypes.string.isRequired,
+  index: PropTypes.number,
+  controlFunc: PropTypes.func.isRequired
+};
 
-export default (CheckboxOrRadioGroup);
+export default CheckboxOrRadioGroup;

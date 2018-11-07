@@ -24,11 +24,6 @@ class ContainedButton extends React.Component {
     this.state = {};
   }
 
-  // handleClick(url) {
-  //   console.log(url);
-  //   //this.props.history.push("/fdsf");
-  // }
-
   render() {
     const { classes, labelName, color, url, size } = this.props;
 
@@ -41,7 +36,6 @@ class ContainedButton extends React.Component {
           component={Link}
           to={url}
           size={size}
-          //onClick={() => this.handleClick(url)}
         >
           <SearchIcon className={classes.iconSmall} />
           {labelName}
