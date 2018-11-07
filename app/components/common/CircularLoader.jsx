@@ -5,12 +5,18 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 const styles = theme => ({
   progress: {
-    margin: theme.spacing.unit * 2,
+    margin: theme.spacing.unit * 10
   }
 });
 
 const CircularLoader = ({ classes }) => (
-  <CircularProgress className={classes.progress} color="secondary" />
+  <center>
+    <CircularProgress
+      className={classes.progress}
+      size={80}
+      color="secondary"
+    />
+  </center>
 );
 
 CircularLoader.propTypes = {

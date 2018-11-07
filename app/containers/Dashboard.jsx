@@ -5,6 +5,7 @@ import Hero from "../components/dashboard/Hero";
 import StatItem from "../components/dashboard/StatItem";
 import CourseTable from "../components/dashboard/CourseTable";
 import Grid from "@material-ui/core/Grid";
+import NoDataFound from "../components/common/NoDataFound";
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -54,11 +55,15 @@ class Dashboard extends React.Component {
     return (
       <React.Fragment>
         <Hero title={mainTitle} message={mainMessage} />
-        {stats && stats.length ? statItemsGrid : <p>No statItem data found!</p>}
+        {stats && stats.length ? (
+          statItemsGrid
+        ) : (
+          <NoDataFound text={"Stats Items"} />
+        )}
         {courses && courses.length ? (
           coursesTable
         ) : (
-          <p>No courses data found!</p>
+          <NoDataFound text={"Courses"} />
         )}
       </React.Fragment>
     );
