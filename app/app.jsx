@@ -15,12 +15,10 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
-import PeopleIcon from "@material-ui/icons/People";
 import AddIcon from "@material-ui/icons/Add";
 import Dashboard from "./containers/Dashboard";
 import Courses from "./containers/Courses";
 import Course from "./containers/Course";
-import Instructors from "./containers/Instructors";
 import AddNewCourse from "./containers/AddNewCourse";
 import NoMatch from "./components/NoMatch";
 import ListItemLink from "./components/page-structure/ListItemLink";
@@ -93,7 +91,6 @@ class App extends React.Component {
               <List>
                 <ListItemLink icon={<DashboardIcon/>} primary="Dashboard" secondary="Dashboard" to="/" afterClick={this.handleDrawerClose}/>
                 <ListItemLink icon={<LibraryBooksIcon/>} primary="Courses" secondary="Courses" to="/courses" afterClick={this.handleDrawerClose}/>
-                <ListItemLink icon={<PeopleIcon/>} primary="Instructors" secondary="Instructors" to="/instructors" afterClick={this.handleDrawerClose}/>
                 <ListItemLink icon={<AddIcon/>} primary="New Course" secondary="Add new course" to="/courses/new" afterClick={this.handleDrawerClose}/>
               </List>
             </Drawer>
@@ -110,7 +107,6 @@ class App extends React.Component {
                 <Route path="/courses" exact={true} component={Courses}/>
                 <Route path="/courses/new" exact={true} component={AddNewCourse}/>
                 <Route path="/courses/:courseId" component={Course}/>
-                <Route path="/instructors" exact={true} component={Instructors}/>
                 <Route component={NoMatch}></Route>
               </Switch>
           
