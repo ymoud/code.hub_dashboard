@@ -11,17 +11,19 @@ import SingleInput from "../../common/SingleInput";
 import CheckboxOrRadioGroup from "../../common/CheckboxOrRadioGroup";
 import styles from "./styles";
 import Services from "../../../services/index";
+import DeleteIcon from "@material-ui/icons/Delete";
+import AddButtonIcon from "@material-ui/icons/AddBox";
 
 class CourseNewForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      //isLoaded: false,
       title: "",
       duration: "",
       imagePath: "",
       open: false,
       instructors: [],
+      selectedInstructor: [],
       dates: {
         start_date: "",
         end_date: ""
@@ -90,17 +92,49 @@ class CourseNewForm extends React.Component {
   };
 
   handleSubmit = e => {
-    //e.preventDefault();
-    //console.log(this.state);
-    //debugger;
-    // var selectedInstructor = [];
-    // this.state.instructors.filter(function(obj) {
-    //   if (obj.selected == true) {
-    //     selectedInstructor.push(obj.id);
-    //   }
-    // });
-    //this.setState({ instructors: filteredArray });
+    e.preventDefault();
+
+    let newSelectedInstructor = [...this.state.selectedInstructor];
+    this.state.instructors.filter(obj => {
+      if (obj.selected == true) {
+        newSelectedInstructor.push(obj.id);
+      }
+    });
+
+    this.setState({
+      selectedInstructor: newSelectedInstructor
+    });
+
+    //console.log("BEFORE SERVICE:", this.state);
     //Services.createCourse(this.state);
+  };
+
+  handleClearForm = e => {
+    e.preventDefault();
+
+    // Uncheck selected instructors
+    let defaultInstructors = [...this.state.instructors];
+    defaultInstructors.forEach(item => {
+      item.selected = false;
+    });
+
+    this.setState({
+      title: "",
+      duration: "",
+      imagePath: "",
+      open: false,
+      instructors: defaultInstructors,
+      selectedInstructor: [],
+      dates: {
+        start_date: "",
+        end_date: ""
+      },
+      price: {
+        normal: "0",
+        early_bird: "0"
+      },
+      description: ""
+    });
   };
 
   render() {
@@ -224,17 +258,29 @@ class CourseNewForm extends React.Component {
                 required={true}
               />
               <br />
-              <br />
-              <Button
-                type="submit"
-                size="large"
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={e => this.handleSubmit(e)}
-              >
-                Add Course
-              </Button>
+              <center>
+                <Button
+                  type="submit"
+                  size="large"
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  onClick={e => this.handleSubmit(e)}
+                >
+                  Add Course
+                  <AddButtonIcon className={classes.rightIcon} />
+                </Button>
+                <Button
+                  size="large"
+                  variant="contained"
+                  color="secondary"
+                  className={classes.clear}
+                  onClick={e => this.handleClearForm(e)}
+                >
+                  Clear Form
+                  <DeleteIcon className={classes.rightIcon} />
+                </Button>
+              </center>
             </form>
           </Paper>
         </main>

@@ -28,6 +28,13 @@ const styles = theme => ({
   },
   submit: {
     marginTop: theme.spacing.unit * 3
+  },
+  clear: {
+    marginLeft: theme.spacing.unit * 2,
+    marginTop: theme.spacing.unit * 3
+  },
+  rightIcon: {
+    marginLeft: theme.spacing.unit
   }
 });
 
