@@ -18,7 +18,7 @@ const styles = theme => ({
   }
 });
 
-class ContainedButton extends React.Component {
+class ViewButton extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -45,7 +45,7 @@ class ContainedButton extends React.Component {
   }
 }
 
-ContainedButton.propTypes = {
+ViewButton.propTypes = {
   classes: PropTypes.object.isRequired,
   labelName: PropTypes.string,
   color: PropTypes.string,
@@ -53,4 +53,4 @@ ContainedButton.propTypes = {
   size: PropTypes.string
 };
 
-export default withStyles(styles)(ContainedButton);
+export default withStyles(styles)(ViewButton);

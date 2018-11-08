@@ -9,9 +9,10 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import ClearIcon from "@material-ui/icons/Clear";
 import CheckIcon from "@material-ui/icons/Check";
-import { Link } from "react-router-dom";
+import EditButton from "../common/EditButton";
 import DOMPurify from "dompurify";
 import InstructorsGrid from "../instructors/InstructorsGrid";
+import DeleteIcon from "@material-ui/icons/DeleteForever";
 import withData from "../hocs/withData";
 import withLoader from "../hocs/withLoader";
 
@@ -75,15 +76,20 @@ const CourseDetails = ({ data: course, classes, handleDelete }) => (
           </Grid>
         </CardContent>
         <CardActions>
+          <EditButton
+            labelName={"Edit"}
+            color={"primary"}
+            url={`/courses/${course.id}/edit`}
+            size={"medium"}
+          />
           <Button
-            component={Link}
-            to={`/courses/${course.id}/edit`}
-            size="medium"
-            color="primary"
+            variant="contained"
+            color={"secondary"}
+            className={classes.button}
+            onClick={handleDelete}
+            size={"medium"}
           >
-            Edit
-          </Button>
-          <Button size="medium" color="secondary" onClick={handleDelete}>
+            <DeleteIcon className={classes.iconSmall} />
             Delete
           </Button>
         </CardActions>
@@ -93,15 +99,15 @@ const CourseDetails = ({ data: course, classes, handleDelete }) => (
 );
 
 CourseDetails.propTypes = {
-    courseId: PropTypes.string.isRequired,
-    data: PropTypes.object,
-    classes: PropTypes.object,
-    handleDelete: PropTypes.func
+  courseId: PropTypes.string.isRequired,
+  data: PropTypes.object,
+  classes: PropTypes.object,
+  handleDelete: PropTypes.func
 };
 
 const options = {
-    methodName: "getCourse",
-    paramName: "courseId"
-  };
+  methodName: "getCourse",
+  paramName: "courseId"
+};
 
 export default withData(options)(withLoader(CourseDetails));

@@ -6,12 +6,11 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
 import ClearIcon from "@material-ui/icons/Clear";
 import CheckIcon from "@material-ui/icons/Check";
-import { Link } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import styles from "./styles";
+import ViewButton from "../../../common/ViewButton";
 
 const CourseGridItem = ({ course, classes }) => {
   return (
@@ -28,19 +27,31 @@ const CourseGridItem = ({ course, classes }) => {
               {course.title}
             </Typography>
             <Typography gutterBottom>
-              Price: <span className={classes.boldText}>{course.price.normal}€</span> | Bookable: <span className={classes.boldText}>{course.open ? <CheckIcon></CheckIcon> : <ClearIcon></ClearIcon>}</span>
+              Price:{" "}
+              <span className={classes.boldText}>{course.price.normal}€</span> |
+              Bookable:{" "}
+              <span className={classes.boldText}>
+                {course.open ? <CheckIcon /> : <ClearIcon />}
+              </span>
             </Typography>
             <Typography gutterBottom>
-                Duration: <span className={classes.boldText}>{course.duration}</span>
+              Duration:{" "}
+              <span className={classes.boldText}>{course.duration}</span>
             </Typography>
             <Typography gutterBottom>
-                Dates: <span className={classes.boldText}>{course.dates.start_date} - {course.dates.end_date}</span>
+              Dates:{" "}
+              <span className={classes.boldText}>
+                {course.dates.start_date} - {course.dates.end_date}
+              </span>
             </Typography>
           </CardContent>
           <CardActions>
-            <Button component={Link} to={`/courses/${course.id}`} size="medium" color="primary">
-        View
-            </Button>
+            <ViewButton
+              labelName={"View Course"}
+              color={"primary"}
+              url={`/courses/${course.id}`}
+              size={"small"}
+            />
           </CardActions>
         </Card>
       </Grid>

@@ -42,19 +42,20 @@ class Course extends Component {
       showLoaderOnConfirm: true,
       allowOutsideClick: () => !MySwal.isLoading(),
       preConfirm: () => {
-        Services.deleteCourse(this.props.match.params.courseId)
-        .then(() => this.setState(() => ({
-          toList: true
-        })));
-      },
+        Services.deleteCourse(this.props.match.params.courseId).then(() =>
+          this.setState(() => ({
+            toList: true
+          }))
+        );
+      }
     });
   };
 
   render() {
-    const {toList} = this.state;
+    const { toList } = this.state;
 
     if (toList === true) {
-      return <Redirect to='/courses' />;
+      return <Redirect to="/courses" />;
     }
 
     const { match, classes } = this.props;

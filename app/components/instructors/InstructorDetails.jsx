@@ -6,7 +6,7 @@ import { withStyles } from "@material-ui/core/styles";
 import withData from "../hocs/withData";
 import withLoader from "../hocs/withLoader";
 
-const InstructorDetails = ({data: instructor, classes: styles }) => (
+const InstructorDetails = ({ data: instructor, classes: styles }) => (
   <React.Fragment>
     <Typography className={styles.inlineHeading} variant="h6">
       {instructor.name.first} {instructor.name.last}
@@ -18,6 +18,10 @@ const InstructorDetails = ({data: instructor, classes: styles }) => (
       Email:{" "}
       <a href={`mailto:${instructor.email}`} target="_top">
         {instructor.email}
+      </a>
+      {" | "}
+      <a href={instructor.linkedin} target="new">
+        LinkedIn
       </a>
     </Typography>
     <Typography gutterBottom variant="body2">

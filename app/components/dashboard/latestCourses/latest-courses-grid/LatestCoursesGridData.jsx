@@ -10,7 +10,7 @@ import Paper from "@material-ui/core/Paper";
 import CheckIcon from "@material-ui/icons/Check";
 import PriorityIcon from "@material-ui/icons/PriorityHigh";
 import Typography from "@material-ui/core/Typography";
-import ContainedButton from "../../../common/ContainedButton";
+import ViewButton from "../../../common/ViewButton";
 import styles from "./style";
 
 const CustomTableCell = withStyles({
@@ -62,7 +62,7 @@ function LatestCoursesGridData(props) {
                   {course.dates.start_date} - {course.dates.end_date}
                 </CustomTableCell>
                 <CustomTableCell className={classes.centerAlign}>
-                  <ContainedButton
+                  <ViewButton
                     labelName={"View Details"}
                     color={"primary"}
                     size={"medium"}
@@ -76,7 +76,7 @@ function LatestCoursesGridData(props) {
       </Table>
       <br />
       <div className={classes.rightAligh}>
-        <ContainedButton
+        <ViewButton
           labelName={"View All"}
           color={"default"}
           url={"/courses"}
