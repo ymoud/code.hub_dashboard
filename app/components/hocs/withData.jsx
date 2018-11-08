@@ -1,26 +1,38 @@
 import React, { Component } from "react";
 import propTypes from "prop-types";
 import Services from "../../services/index";
-import NoMatch from "../NoMatch";
+import NoDataFound from "../common/NoDataFound";
 
-const withData = ({methodName: serviceMethod, paramName: serviceMethodParam}) => (WrappedComponent) => {
+const withData = ({
+  methodName: serviceMethod,
+  paramName: serviceMethodParam
+}) => WrappedComponent => {
   class withDataComponent extends Component {
     state = {
       data: [],
       isLoading: true,
       notFound: false
-    }
+    };
 
     componentDidMount() {
-      (serviceMethodParam && this.props[serviceMethodParam] ? Services[serviceMethod](this.props[serviceMethodParam]) : Services[serviceMethod]())
-        .then((res) => this.setState({ data: res.data, isLoading: false }))
-        .catch(() => this.setState({data: undefined, isLoading: false, notFound: true}));
+      (serviceMethodParam && this.props[serviceMethodParam]
+        ? Services[serviceMethod](this.props[serviceMethodParam])
+        : Services[serviceMethod]()
+      )
+        .then(res => this.setState({ data: res.data, isLoading: false }))
+        .catch(() =>
+          this.setState({ data: undefined, isLoading: false, notFound: true })
+        );
     }
 
     render() {
-      const {notFound} = this.state;
+      const { notFound } = this.state;
 
-      return notFound ? <NoMatch/> : <WrappedComponent {...this.state} {...this.props} />;
+      return notFound ? (
+        <NoDataFound />
+      ) : (
+        <WrappedComponent {...this.state} {...this.props} />
+      );
     }
   }
 

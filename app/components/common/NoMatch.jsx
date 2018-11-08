@@ -16,6 +16,14 @@ const styles = theme => ({
   title: {
     fontSize: 40,
     color: "#525050"
+  },
+  icon: {
+    width: 300,
+    height: 300,
+    display: "block",
+    margin: "auto",
+    position: "relative",
+    color: "grey"
   }
 });
 
@@ -37,16 +45,7 @@ class NoMatch extends React.Component {
 
     return (
       <React.Fragment>
-        <Icon
-          style={{
-            width: 300,
-            height: 300,
-            display: "block",
-            margin: "auto",
-            position: "relative",
-            color: "grey"
-          }}
-        />
+        <Icon className={classes.icon} />
         <br />
         <Typography
           className={classes.title}
@@ -62,16 +61,17 @@ class NoMatch extends React.Component {
         </Typography>
 
         <center>
-        { history ? <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            onClick={this.handleClick}
-          >
-            <RestoreIcon className={classes.leftIcon} />
-            Go Home
-          </Button>
-          : null}
+          {history ? (
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              onClick={this.handleClick}
+            >
+              <RestoreIcon className={classes.leftIcon} />
+              Go Home
+            </Button>
+          ) : null}
         </center>
       </React.Fragment>
     );

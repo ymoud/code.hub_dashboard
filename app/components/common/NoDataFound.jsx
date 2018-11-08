@@ -1,32 +1,27 @@
 import React from "react";
 import Icon from "@material-ui/icons/Warning";
-import PropTypes from "prop-types";
 import { Typography } from "@material-ui/core";
 
-const NoDataFound = props => {
-  const message = `No data yet for ${props.text}...`;
+const iconStyle = {
+  width: 55,
+  height: 55,
+  display: "block",
+  margin: "auto",
+  marginTop: "4%",
+  position: "relative",
+  color: "darkred"
+};
+
+const NoDataFound = () => {
+  const message = "no data found";
   return (
     <React.Fragment>
-      <Icon
-        style={{
-          width: 50,
-          height: 50,
-          display: "block",
-          margin: "auto",
-          marginTop: "2%",
-          position: "relative",
-          color: "darkred"
-        }}
-      />
+      <Icon style={iconStyle} />
       <Typography variant="h6" align="center" color="textSecondary" paragraph>
-        {message}
+        {message.toLocaleUpperCase()}
       </Typography>
     </React.Fragment>
   );
-};
-
-NoDataFound.propTypes = {
-  text: PropTypes.string.isRequired
 };
 
 export default NoDataFound;

@@ -3,17 +3,7 @@ import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-
-const styles = theme => ({
-  root: {
-    backgroundColor: "#eaeaea"
-  },
-  heroContent: {
-    maxWidth: 600,
-    margin: "0 auto",
-    padding: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 6}px`
-  }
-});
+import styles from "./styles";
 
 const Hero = ({ classes, title, message }) => {
   return (
@@ -45,8 +35,8 @@ const Hero = ({ classes, title, message }) => {
 
 Hero.propTypes = {
   classes: PropTypes.object.isRequired,
-  title: PropTypes.string,
-  message: PropTypes.string
+  title: PropTypes.string.isRequired,
+  message: PropTypes.string.isRequired
 };
 
 export default withStyles(styles)(Hero);
