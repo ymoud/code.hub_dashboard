@@ -6,7 +6,7 @@ import LatestCoursesGrid from "./latest-courses-grid/LatestCoursesGrid";
 
 const LatestCourses = ({ data, isLoading }) => (
   <React.Fragment>
-    {!isLoading && <LatestCoursesGrid latestCourses={data} />}
+    {!isLoading && <LatestCoursesGrid courses={data} />}
   </React.Fragment>
 );
 
