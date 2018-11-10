@@ -9,7 +9,7 @@ const SingleInput = props => {
         type={props.type}
         label={props.label}
         name={props.name}
-        value={props.value}
+        value={props.value == null ? "" : props.value}
         onChange={props.controlFunc}
         required={props.required}
         placeholder={props.placeholder}
@@ -29,7 +29,7 @@ SingleInput.propTypes = {
   type: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  value: PropTypes.node.isRequired,
+  value: PropTypes.node,
   controlFunc: PropTypes.func.isRequired,
   required: PropTypes.bool,
   placeholder: PropTypes.string,

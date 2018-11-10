@@ -14,6 +14,7 @@ import CheckboxOrRadioGroup from "../../common/CheckboxOrRadioGroup";
 import styles from "./styles";
 import Services from "../../../services/index";
 import DeleteIcon from "@material-ui/icons/Delete";
+import RestoreIcon from "@material-ui/icons/SettingsBackUpRestore";
 import AddButtonIcon from "@material-ui/icons/AddBox";
 import { withRouter } from "react-router";
 import Swal from "sweetalert2";
@@ -364,8 +365,12 @@ class CourseNewForm extends React.Component {
                   className={classes.clear}
                   onClick={e => this.handleClearForm(e)}
                 >
-                  Clear Form
-                  <DeleteIcon className={classes.rightIcon} />
+                  {isNew ? "Clear Form" : "Restore Form"}
+                  {isNew ? (
+                    <DeleteIcon className={classes.rightIcon} />
+                  ) : (
+                    <RestoreIcon className={classes.rightIcon} />
+                  )}
                 </Button>
               </center>
             </form>
