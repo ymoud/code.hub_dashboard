@@ -6,6 +6,8 @@ import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
 import AddIcon from "@material-ui/icons/AddToQueue";
+import AirPlayIcon from "@material-ui/icons/AirPlay";
+import SaveIcon from "@material-ui/icons/Save";
 import Paper from "@material-ui/core/Paper";
 import SingleInput from "../../common/SingleInput";
 import CheckboxOrRadioGroup from "../../common/CheckboxOrRadioGroup";
@@ -20,12 +22,22 @@ class CourseNewForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      course: this.getCleanCourseData(),
+      instructorsData: [],
+      isNew: true,
+      courseId: "",
+      courseTitle: "",
+      initialCourse: {}
+    };
+  }
+
+  getCleanCourseData() {
+    return {
       title: "",
       duration: "",
       imagePath: "",
       open: false,
       instructors: [],
-      instructorsData: [],
       dates: {
         start_date: "",
         end_date: ""
@@ -37,22 +49,52 @@ class CourseNewForm extends React.Component {
       description: ""
     };
   }
+  tryLoadCourse() {
+    const { match } = this.props;
+    const isNew = !match || !match.params.courseId;
 
-  componentDidMount() {
+    if (isNew) {
+      this.loadInstructors();
+      return;
+    }
+
+    this.setState(state => {
+      state.isNew = false;
+      state.courseId = courseId;
+      return state;
+    });
+
+    const courseId = match.params.courseId;
+    Services.getCourse(courseId).then(res =>
+      this.setState(state => {
+        state.course = res.data;
+        state.initialCourse = res.data;
+        state.courseTitle = res.data.title;
+        return state;
+      }, this.loadInstructors())
+    );
+  }
+
+  loadInstructors() {
     Services.getInstructors().then(responce => {
-      this.setState({
-        instructorsData: responce.data.map(({ name, id }) => {
+      this.setState(state => {
+        state.instructorsData = responce.data.map(({ name, id }) => {
           return (
             { ...name },
             {
               id,
               fullName: name.first + " " + name.last,
-              selected: false
+              selected: state.course.instructors.indexOf(id) > -1
             }
           );
-        })
+        });
+        return state;
       });
     });
+  }
+
+  componentDidMount() {
+    this.tryLoadCourse();
   }
 
   handleChange = e => {
@@ -69,60 +111,94 @@ class CourseNewForm extends React.Component {
       switch (target.type) {
         case "checkbox": {
           value = target.checked;
-          this.setState({ [name]: value });
+          this.setState(state => {
+            state.course[name] = value;
+            return state;
+          });
           break;
         }
         case "date": {
           value = target.value;
-          let newDates = { ...this.state.dates };
+          let newDates = { ...this.state.course.dates };
           newDates[name] = value;
-          this.setState({ dates: newDates });
+          this.setState(state => {
+            state.course.dates = newDates;
+            return state;
+          });
           break;
         }
         case "number": {
           value = target.value < 0 ? "0" : target.value;
-          let newPrices = { ...this.state.price };
+          let newPrices = { ...this.state.course.price };
           newPrices[name] = value;
-          this.setState({ price: newPrices });
+          this.setState(state => {
+            state.course.price = newPrices;
+            return state;
+          });
           break;
         }
         default:
           value = target.value;
-          this.setState({ [name]: value });
+          this.setState(state => {
+            state.course[name] = value;
+            return state;
+          });
       }
     }
   };
 
+  saveCourse() {
+    const { course } = this.state;
+    Services.createCourse(course)
+      .catch(() => Swal("Oops...", "Something went wrong!", "error"))
+      .then(() => {
+        Swal(
+          "Success",
+          `A new course with title: <strong>${
+            this.state.course.title
+          }</strong> has been created!`,
+          "success"
+        );
+        this.props.history.push("/courses");
+      });
+  }
+
+  updateCourse() {
+    const { course, courseId } = this.state;
+    Services.updateCourse(courseId, course)
+      .then(() => {
+        Swal("Success", `the course ${course.title} was updated!`, "success");
+        this.props.history.push("/courses");
+      })
+      .catch(() => Swal("Oops...", "Something went wrong!", "error"));
+  }
+
   handleSubmit = e => {
+    const { isNew } = this.state;
     e.preventDefault();
 
-    let newSelectedInstructor = [];
+    let newSelectedInstructors = [];
     this.state.instructorsData.filter(obj => {
       if (obj.selected == true) {
-        newSelectedInstructor.push(obj.id);
+        newSelectedInstructors.push(obj.id);
       }
     });
 
-    this.setState({ instructors: newSelectedInstructor }, () => {
-      Services.createCourse(this.state)
-        .then(() => {
-          Swal(
-            "Success",
-            `A new course with title: <strong>${
-              this.state.title
-            }</strong> has been created!`,
-            "success"
-          );
-          this.props.history.push("/courses");
-        })
-        .catch(error => {
-          Swal("Oops...", "Something went wrong!", "error");
-          console.log(error);
-        });
-    });
+    this.setState(
+      state => {
+        state.course.instructors = newSelectedInstructors;
+        return state;
+      },
+      () => {
+        isNew
+          ? this.saveCourse(newSelectedInstructors)
+          : this.updateCourse(newSelectedInstructors);
+      }
+    );
   };
 
   handleClearForm = e => {
+    const { isNew } = this.state;
     e.preventDefault();
 
     // Uncheck selected instructors
@@ -131,45 +207,39 @@ class CourseNewForm extends React.Component {
       item.selected = false;
     });
 
-    this.setState({
-      title: "",
-      duration: "",
-      imagePath: "",
-      open: false,
-      instructors: defaultInstructors,
-      selectedInstructor: [],
-      dates: {
-        start_date: "",
-        end_date: ""
-      },
-      price: {
-        normal: "0",
-        early_bird: "0"
-      },
-      description: ""
-    });
+    if (isNew) {
+      this.setState(state => {
+        state.course = this.getCleanCourseData();
+        return state;
+      });
+    } else {
+      this.setState(state => {
+        state.course = Object.assign({}, state.initialCourse);
+        return state;
+      });
+    }
   };
 
   render() {
     const { classes } = this.props;
-
+    const { course, instructorsData, isNew, courseTitle } = this.state;
     return (
       <React.Fragment>
         <CssBaseline />
         <main className={classes.layout}>
           <Paper className={classes.paper}>
             <Avatar className={classes.avatar}>
-              <AddIcon />
+              {isNew ? <AddIcon /> : <AirPlayIcon />}
             </Avatar>
             <Typography component="h1" variant="h5">
-              Add New Course
+              {isNew ? "Add New Course" : `Update Course: ${courseTitle}`}
             </Typography>
             <form className={classes.form} autoComplete="off">
               <SingleInput
                 type={"text"}
                 label={"Title"}
                 name={"title"}
-                value={this.state.title}
+                value={course.title}
                 controlFunc={e => this.handleChange(e)}
                 required={true}
                 placeholder={"Title"}
@@ -178,7 +248,7 @@ class CourseNewForm extends React.Component {
                 type={"text"}
                 label={"Duration"}
                 name={"duration"}
-                value={this.state.duration}
+                value={course.duration}
                 controlFunc={e => this.handleChange(e)}
                 required={true}
                 placeholder={"Duration"}
@@ -187,7 +257,7 @@ class CourseNewForm extends React.Component {
                 type={"text"}
                 label={"Image Path"}
                 name={"imagePath"}
-                value={this.state.imagePath}
+                value={course.imagePath}
                 controlFunc={e => this.handleChange(e)}
                 required={true}
                 placeholder={"Image Path"}
@@ -200,21 +270,21 @@ class CourseNewForm extends React.Component {
                 singleCheckBox={true}
                 label={"Bookable"}
                 name={"open"}
-                checked={this.state.open}
+                checked={course.open}
                 controlFunc={e => this.handleChange(e)}
               />
               <br />
               <Typography component="h1" variant="h6">
                 Instructors
               </Typography>
-              {this.state.instructorsData.map((element, index) => {
+              {instructorsData.map((element, index) => {
                 return (
                   <CheckboxOrRadioGroup
                     key={element.id}
                     index={index}
                     singleCheckBox={false}
                     label={element.fullName}
-                    checked={this.state.instructorsData[index].selected}
+                    checked={instructorsData[index].selected}
                     controlFunc={e => this.handleChange(e)}
                   />
                 );
@@ -223,7 +293,7 @@ class CourseNewForm extends React.Component {
                 type={"text"}
                 label={"Description"}
                 name={"description"}
-                value={this.state.description}
+                value={course.description}
                 controlFunc={e => this.handleChange(e)}
                 required={true}
                 multiline={true}
@@ -236,7 +306,7 @@ class CourseNewForm extends React.Component {
                 type={"date"}
                 label={"Start Date"}
                 name={"start_date"}
-                value={this.state.dates["start_date"]}
+                value={course.dates["start_date"]}
                 controlFunc={e => this.handleChange(e)}
                 required={true}
                 placeholder={"Start Date"}
@@ -245,7 +315,7 @@ class CourseNewForm extends React.Component {
                 type={"date"}
                 label={"End Date"}
                 name={"end_date"}
-                value={this.state.dates["end_date"]}
+                value={course.dates["end_date"]}
                 controlFunc={e => this.handleChange(e)}
                 required={true}
                 placeholder={"Start Date"}
@@ -258,7 +328,7 @@ class CourseNewForm extends React.Component {
                 type={"number"}
                 label={"Early Bird"}
                 name={"early_bird"}
-                value={this.state.price["early_bird"]}
+                value={course.price["early_bird"]}
                 controlFunc={e => this.handleChange(e)}
                 required={true}
               />
@@ -266,7 +336,7 @@ class CourseNewForm extends React.Component {
                 type={"number"}
                 label={"Normal"}
                 name={"normal"}
-                value={this.state.price["normal"]}
+                value={course.price["normal"]}
                 controlFunc={e => this.handleChange(e)}
                 required={true}
               />
@@ -280,8 +350,12 @@ class CourseNewForm extends React.Component {
                   className={classes.submit}
                   onClick={e => this.handleSubmit(e)}
                 >
-                  Add Course
-                  <AddButtonIcon className={classes.rightIcon} />
+                  {isNew ? "Add Course" : "Update Course"}
+                  {isNew ? (
+                    <AddButtonIcon className={classes.rightIcon} />
+                  ) : (
+                    <SaveIcon className={classes.rightIcon} />
+                  )}
                 </Button>
                 <Button
                   size="large"
@@ -305,7 +379,12 @@ class CourseNewForm extends React.Component {
 CourseNewForm.propTypes = {
   classes: PropTypes.object.isRequired,
   history: PropTypes.object,
-  push: PropTypes.func
+  push: PropTypes.func,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      courseId: PropTypes.node
+    })
+  })
 };
 
 export default withRouter(withStyles(styles)(CourseNewForm));

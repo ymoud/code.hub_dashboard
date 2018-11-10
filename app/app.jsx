@@ -130,11 +130,20 @@ class App extends React.Component {
                 <Route path="/" exact={true} component={Dashboard} />
                 <Route path="/courses" exact={true} component={Courses} />
                 <Route
+                  path="/courses/:courseId/edit"
+                  component={AddNewCourse}
+                  exact={true}
+                />
+                <Route
                   path="/courses/new"
                   exact={true}
                   component={AddNewCourse}
                 />
-                <Route path="/courses/:courseId" component={Course} />
+                <Route
+                  path="/courses/:courseId"
+                  component={Course}
+                  exact={true}
+                />
                 <Route component={NoMatch} />
               </Switch>
             </main>

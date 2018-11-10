@@ -29,7 +29,7 @@ SingleInput.propTypes = {
   type: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.node.isRequired,
   controlFunc: PropTypes.func.isRequired,
   required: PropTypes.bool,
   placeholder: PropTypes.string,

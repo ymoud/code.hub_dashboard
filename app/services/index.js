@@ -33,6 +33,10 @@ class Services {
   static createCourse(course) {
     return axios.post(`${Services.apiUrl}/${Services.coursesPath}`, course);
   }
+
+  static updateCourse(courseId, course) {
+    return axios.put(`${Services.apiUrl}/${Services.coursesPath}/${courseId}`, course);
+  }
 }
 
 export default Services;
