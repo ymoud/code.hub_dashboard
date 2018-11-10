@@ -13,6 +13,8 @@ import styles from "./styles";
 import Services from "../../../services/index";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AddButtonIcon from "@material-ui/icons/AddBox";
+import { withRouter } from "react-router";
+import Swal from "sweetalert2";
 
 class CourseNewForm extends React.Component {
   constructor(props) {
@@ -23,7 +25,7 @@ class CourseNewForm extends React.Component {
       imagePath: "",
       open: false,
       instructors: [],
-      selectedInstructor: [],
+      instructorsData: [],
       dates: {
         start_date: "",
         end_date: ""
@@ -39,7 +41,7 @@ class CourseNewForm extends React.Component {
   componentDidMount() {
     Services.getInstructors().then(responce => {
       this.setState({
-        instructors: responce.data.map(({ name, id }) => {
+        instructorsData: responce.data.map(({ name, id }) => {
           return (
             { ...name },
             {
@@ -57,9 +59,9 @@ class CourseNewForm extends React.Component {
     let name, value;
 
     if (!isNaN(e)) {
-      const newInstructors = [...this.state.instructors];
+      const newInstructors = [...this.state.instructorsData];
       newInstructors[e].selected = !newInstructors[e].selected;
-      this.setState({ instructors: newInstructors });
+      this.setState({ instructorsData: newInstructors });
     } else {
       const target = e.target;
       name = target.name;
@@ -94,26 +96,37 @@ class CourseNewForm extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
 
-    let newSelectedInstructor = [...this.state.selectedInstructor];
-    this.state.instructors.filter(obj => {
+    let newSelectedInstructor = [];
+    this.state.instructorsData.filter(obj => {
       if (obj.selected == true) {
         newSelectedInstructor.push(obj.id);
       }
     });
 
-    this.setState({
-      selectedInstructor: newSelectedInstructor
+    this.setState({ instructors: newSelectedInstructor }, () => {
+      Services.createCourse(this.state)
+        .then(() => {
+          Swal(
+            "Success",
+            `A new course with title: <strong>${
+              this.state.title
+            }</strong> has been created!`,
+            "success"
+          );
+          this.props.history.push("/courses");
+        })
+        .catch(error => {
+          Swal("Oops...", "Something went wrong!", "error");
+          console.log(error);
+        });
     });
-
-    //console.log("BEFORE SERVICE:", this.state);
-    //Services.createCourse(this.state);
   };
 
   handleClearForm = e => {
     e.preventDefault();
 
     // Uncheck selected instructors
-    let defaultInstructors = [...this.state.instructors];
+    let defaultInstructors = [...this.state.instructorsData];
     defaultInstructors.forEach(item => {
       item.selected = false;
     });
@@ -194,14 +207,14 @@ class CourseNewForm extends React.Component {
               <Typography component="h1" variant="h6">
                 Instructors
               </Typography>
-              {this.state.instructors.map((element, index) => {
+              {this.state.instructorsData.map((element, index) => {
                 return (
                   <CheckboxOrRadioGroup
                     key={element.id}
                     index={index}
                     singleCheckBox={false}
                     label={element.fullName}
-                    checked={this.state.instructors[index].selected}
+                    checked={this.state.instructorsData[index].selected}
                     controlFunc={e => this.handleChange(e)}
                   />
                 );
@@ -291,7 +304,8 @@ class CourseNewForm extends React.Component {
 
 CourseNewForm.propTypes = {
   classes: PropTypes.object.isRequired,
-  isBookable: PropTypes.string
+  history: PropTypes.object,
+  push: PropTypes.func
 };
 
-export default withStyles(styles)(CourseNewForm);
+export default withRouter(withStyles(styles)(CourseNewForm));

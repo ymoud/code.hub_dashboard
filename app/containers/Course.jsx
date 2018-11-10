@@ -38,7 +38,10 @@ class Course extends Component {
       type: "warning",
       title: <p>Are you sure you want to delete this course?</p>,
       showCancelButton: true,
-      confirmButtonText: "Yes, Delete",
+      confirmButtonText: "Yes, delete it!",
+      confirmButtonColor: "#d33",
+      cancelButtonText: "No, keep it",
+      cancelButtonColor: "#1ba21b",
       showLoaderOnConfirm: true,
       allowOutsideClick: () => !MySwal.isLoading(),
       preConfirm: () => {
@@ -47,6 +50,18 @@ class Course extends Component {
             toList: true
           }))
         );
+      }
+    }).then(result => {
+      if (result.value) {
+        Swal(
+          "Deleted!",
+          `Your course with id: <strong>${
+            this.props.match.params.courseId
+          }</strong> has been deleted.`,
+          "success"
+        );
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal("Cancelled", "Your course is safe :)", "error");
       }
     });
   };
